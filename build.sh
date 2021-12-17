@@ -38,7 +38,7 @@ EOF
 if [[ -d /var/lib/apt/ ]] ; then
     apt install qemu-user-static binfmt-support debootstrap -y
 fi
-debootstrap --foreign --no-check-gpg --no-merged-usr --arch=arm64 stable work/rootfs https://pkgmaster.devuan.org/merged
+[[ -f work/rootfs/etc/os-release ]] || debootstrap --foreign --no-check-gpg --no-merged-usr --arch=arm64 stable work/rootfs https://pkgmaster.devuan.org/merged
 
 cp $(which qemu-aarch64-static) work/rootfs/usr/bin/qemu-aarch64-static
 if which service ; then
@@ -51,10 +51,10 @@ cat > work/rootfs/etc/apt/apt.conf.d/01norecommend << EOF
 APT::Install-Recommends "0";
 APT::Install-Suggests "0";
 EOF
-chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash /debootstrap/debootstrap --second-stage
+[[ -f work/rootfs/debootstrap/debootstrap ]] || chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash /debootstrap/debootstrap --second-stage
 mkdir -p work/rootfs/lib/modules/
 cp -rvf work/firmware-master/modules/* work/rootfs/lib/modules/
-echo "deb http://pkgmaster.devuan.org/devuan merged main contrib non-free" > work/rootfs/etc/apt/sources.list
+echo "deb http://pkgmaster.devuan.org/merged stable main contrib non-free" > work/rootfs/etc/apt/sources.list
 chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash -c "apt-get update"
 chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash -c "apt-get install network-manager openssh-server -y"
 chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash -c "apt-get install firmware-linux raspi-firmware -y"
