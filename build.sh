@@ -52,7 +52,7 @@ cat > work/rootfs/etc/apt/apt.conf.d/01norecommend << EOF
 APT::Install-Recommends "0";
 APT::Install-Suggests "0";
 EOF
-[[ -f work/rootfs/debootstrap/debootstrap ]] || chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash /debootstrap/debootstrap --second-stage
+[[ ! -f work/rootfs/debootstrap/debootstrap ]] || chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash /debootstrap/debootstrap --second-stage
 mkdir -p work/rootfs/lib/modules/
 cp -rvf work/firmware-master/modules/* work/rootfs/lib/modules/
 echo "deb http://pkgmaster.devuan.org/merged stable main contrib non-free" > work/rootfs/etc/apt/sources.list
