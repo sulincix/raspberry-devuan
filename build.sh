@@ -3,7 +3,7 @@ set -ex
 # create boot
 if [[ -d /var/lib/apt/ ]] ; then
     apt update
-    apt install qemu-user-static binfmt-support debootstrap wget -y
+    apt install qemu-user-static binfmt-support debootstrap wget unzip -y
 fi
 mkdir -p work
 cd work
