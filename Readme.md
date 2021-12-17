@@ -6,4 +6,4 @@ https://github.com/sulincix/raspberry-devuan/
 https://gitlab.com/sulincix/raspberry-devuan/
 
 ## Download:
-https://github.com/sulincix/raspberry-devuan/releases/tag/current
+https://github.com/sulincix/raspberry-devuan/releases
