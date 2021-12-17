@@ -12,7 +12,7 @@ cp -rvf work/firmware-master/boot/* rootfs/boot/
 cat > rootfs/boot/cmdline.txt << EOF
 console=ttyS1,115200 console=tty0 root=LABEL=ROOTFS rw net.ifnames=0 rootwait
 EOF
-cat > rootfs/boot/cmdline.txt << EOF
+cat > rootfs/boot/config.txt << EOF
 # Switch the CPU from ARMv7 into ARMv8 (aarch64) mode
 arm_64bit=1
 
