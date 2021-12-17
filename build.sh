@@ -1,6 +1,9 @@
 #!/bin/bash
 set -ex
 # create boot
+if [[ -d /var/lib/apt/ ]] ; then
+    apt install qemu-user-static binfmt-support debootstrap wget -y
+fi
 mkdir -p work
 cd work
 # fetch device firmware (prebuilt)
@@ -35,9 +38,6 @@ dtoverlay=vc4-kms-v3d
 kernel=kernel8.img
 EOF
 # install required packages if host debian
-if [[ -d /var/lib/apt/ ]] ; then
-    apt install qemu-user-static binfmt-support debootstrap -y
-fi
 [[ -f work/rootfs/etc/os-release ]] || debootstrap --foreign --no-check-gpg --no-merged-usr --arch=arm64 stable work/rootfs https://pkgmaster.devuan.org/merged
 
 cp $(which qemu-aarch64-static) work/rootfs/usr/bin/qemu-aarch64-static
