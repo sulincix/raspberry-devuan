@@ -52,23 +52,21 @@ APT::Install-Recommends "0";
 APT::Install-Suggests "0";
 EOF
 chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash /debootstrap/debootstrap --second-stage
-cp -rvf work/firmware-master/modules/* rootfs/lib/modules/
+mkdir -p work/rootfs/lib/modules/
+cp -rvf work/firmware-master/modules/* work/rootfs/lib/modules/
 echo "deb http://pkgmaster.devuan.org/devuan merged main contrib non-free" > work/rootfs/etc/apt/sources.list
 chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash -c "apt-get update"
 chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash -c "apt-get install network-manager openssh-server -y"
 chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash -c "apt-get install firmware-linux raspi-firmware -y"
-cp work/
-for i in $(ls rootfs/lib/modules) ; do
+for i in $(ls work/rootfs/lib/modules) ; do
     chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash -c "depmod -a $i"
 done
-cat work/rootfs/vmlinuz > rootfs/boot/vmlinuz
-cat work/rootfs/initrd.img > rootfs/boot/initrd.img
 size=$(du -s "work/rootfs" | cut -f 1)
 qemu-img create "devuan.img" $(($size*1500+300*1024*1024))
 parted "devuan.img" mklabel msdos
 echo Ignore | parted "devuan.img" mkpart primary fat32 0 300M 
 echo Ignore | parted "devuan.img" mkpart primary ext2 301M 100%
-losetup -d /dev/loop0
+losetup -d /dev/loop0 || true
 loop=$(losetup --partscan --find --show "devuan.img" | grep "/dev/loop")
 mkfs.vfat ${loop}p1
 yes | mkfs.ext4 ${loop}p2 -L "ROOTFS"
