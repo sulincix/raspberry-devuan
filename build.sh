@@ -37,6 +37,13 @@ dtoverlay=vc4-kms-v3d
 
 ## kernel
 kernel=kernel8.img
+
+## overclock
+arm_freq=2300
+gpu_freq=750
+over_voltage=8
+force_turbo=1
+
 EOF
 # install required packages if host debian
 [[ -f work/rootfs/etc/os-release ]] || debootstrap --foreign --no-check-gpg --no-merged-usr --arch=arm64 stable work/rootfs https://pkgmaster.devuan.org/merged
