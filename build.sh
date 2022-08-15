@@ -1,6 +1,5 @@
 #!/bin/bash
 set -ex
-pwd
 #### Define repository variable
 REPO="http://pkgmaster.devuan.org/merged"
 if [[ "$1" != "" ]] ; then
