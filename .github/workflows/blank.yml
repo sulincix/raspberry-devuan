@@ -22,4 +22,5 @@ jobs:
           title: "Auto build devuan"
           files: |
             *.img
+            *.img.xz
 
