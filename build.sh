@@ -97,4 +97,5 @@ mount ${loop}p2 /mnt
 cp -prfv work/rootfs/* /mnt/
 sync
 umount /mnt
+xz devuan.img
 #### done
