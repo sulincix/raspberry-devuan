@@ -65,7 +65,7 @@ APT::Install-Recommends "0";
 APT::Install-Suggests "0";
 EOF
 [[ ! -f work/rootfs/debootstrap/debootstrap ]] || chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash /debootstrap/debootstrap --second-stage
-chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash -c "apt install devuan-keyring -y"
+chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash -c "apt install devuan-keyring kmod -y"
 ##### install firmware and packages
 mkdir -p work/rootfs/lib/modules/
 cp -rvf work/firmware-master/modules/* work/rootfs/lib/modules/
