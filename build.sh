@@ -8,7 +8,7 @@ fi
 #### install required packages if host debian
 if [[ -d /var/lib/apt/ ]] ; then
     apt update
-    apt install qemu-user-static binfmt-support debootstrap wget unzip -y
+    apt install qemu-user-static binfmt-support debootstrap wget unzip qemu-utils -y
 fi
 mkdir -p work
 cd work
