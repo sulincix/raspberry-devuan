@@ -51,7 +51,7 @@ force_turbo=1
 
 EOF
 ##### create rootfs
-[[ -f work/rootfs/etc/os-release ]] || debootstrap --foreign --no-check-gpg --no-merged-usr --arch=arm64 stable work/rootfs "$REPO"
+[[ -f work/rootfs/etc/os-release ]] || debootstrap --foreign --no-check-gpg --no-merged-usr --variant=minbase --arch=arm64 stable work/rootfs "$REPO"
 ##### copy qemu-aarch64-static
 cp $(which qemu-aarch64-static) work/rootfs/usr/bin/qemu-aarch64-static
 if which service ; then
@@ -65,6 +65,7 @@ APT::Install-Recommends "0";
 APT::Install-Suggests "0";
 EOF
 [[ ! -f work/rootfs/debootstrap/debootstrap ]] || chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash /debootstrap/debootstrap --second-stage
+chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash -c "apt install devuan-keyring -y"
 ##### install firmware and packages
 mkdir -p work/rootfs/lib/modules/
 cp -rvf work/firmware-master/modules/* work/rootfs/lib/modules/
