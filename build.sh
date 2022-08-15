@@ -1,5 +1,6 @@
 #!/bin/bash
 set -ex
+pwd
 #### Define repository variable
 REPO="http://pkgmaster.devuan.org/merged"
 if [[ "$1" != "" ]] ; then
@@ -72,6 +73,7 @@ echo "deb $REPO stable main contrib non-free" > work/rootfs/etc/apt/sources.list
 chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash -c "apt update"
 chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash -c "apt install network-manager openssh-server -y"
 chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash -c "apt install firmware-linux -y"
+chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash -c "apt clean"
 for i in $(ls work/rootfs/lib/modules) ; do
     chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash -c "depmod -a $i"
 done
