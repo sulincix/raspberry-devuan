@@ -19,7 +19,7 @@ cd ..
 mkdir -p rootfs/boot
 cp -rvf work/firmware-master/boot/* rootfs/boot/
 cat > rootfs/boot/cmdline.txt << EOF
-console=ttyS1,115200 console=tty0 root=/dev/mmcblk0p2 rootfstype=ext4 rw net.ifnames=0 rootwait
+console=ttyS1,115200 console=tty0 root=/dev/mmcblk0p2 rootfstype=ext4 rw net.ifnames=0 rootwait fbcon=map:10 quiet
 EOF
 cat > rootfs/boot/config.txt << EOF
 # Switch the CPU from ARMv7 into ARMv8 (aarch64) mode
@@ -49,6 +49,9 @@ gpu_freq=750
 over_voltage=8
 force_turbo=1
 
+## disable splash
+boot_delay=0
+disable_splash=1
 EOF
 ##### create rootfs
 [[ -f work/rootfs/etc/os-release ]] || debootstrap --foreign --no-check-gpg --no-merged-usr --variant=minbase --arch=arm64 stable work/rootfs "$REPO"
