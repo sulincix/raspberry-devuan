@@ -77,6 +77,8 @@ chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash -c "apt update"
 chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash -c "apt install network-manager openssh-server -y"
 chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash -c "apt install firmware-linux -y"
 chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash -c "apt clean"
+find work/rootfs/var/log/ -type f | xargs rm -f
+rm -rf work/rootfs/var/lib/apt/lists/*
 for i in $(ls work/rootfs/lib/modules) ; do
     chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash -c "depmod -a $i"
 done
