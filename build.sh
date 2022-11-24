@@ -77,6 +77,10 @@ chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash -c "apt update"
 chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash -c "apt install network-manager openssh-server -y"
 chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash -c "apt install firmware-linux -y"
 chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash -c "apt clean"
+#### create default user
+chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash -c "useradd user -m -U"
+echo -e "devuan\ndevuan\n" | chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash -c "passwd root"
+echo -e "devuan\ndevuan\n" | chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash -c "passwd user"
 find work/rootfs/var/log/ -type f | xargs rm -f
 rm -rf work/rootfs/var/lib/apt/lists/*
 for i in $(ls work/rootfs/lib/modules) ; do
@@ -84,7 +88,7 @@ for i in $(ls work/rootfs/lib/modules) ; do
 done
 #### create image and partitons
 size=$(du -s "work/rootfs" | cut -f 1)
-qemu-img create "devuan.img" $(($size*1500+300*1024*1024))
+qemu-img create "devuan.img" $(($size*1080+(300*1024*1024)))
 parted "devuan.img" mklabel msdos
 echo Ignore | parted "devuan.img" mkpart primary fat32 0 300M 
 echo Ignore | parted "devuan.img" mkpart primary ext2 301M 100%
