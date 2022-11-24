@@ -88,7 +88,7 @@ for i in $(ls work/rootfs/lib/modules) ; do
 done
 #### create image and partitons
 size=$(du -s "work/rootfs" | cut -f 1)
-qemu-img create "devuan.img" $(($size*1080+(300*1024*1024)))
+qemu-img create "devuan.img" $(($size*1080+(600*1024*1024)))
 parted "devuan.img" mklabel msdos
 echo Ignore | parted "devuan.img" mkpart primary fat32 0 300M 
 echo Ignore | parted "devuan.img" mkpart primary ext2 301M 100%
