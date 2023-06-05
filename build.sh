@@ -22,36 +22,90 @@ cat > rootfs/boot/cmdline.txt << EOF
 console=ttyS1,115200 console=tty0 root=/dev/mmcblk0p2 rootfstype=ext4 rw net.ifnames=0 rootwait fbcon=map:10 quiet
 EOF
 cat > rootfs/boot/config.txt << EOF
-# Switch the CPU from ARMv7 into ARMv8 (aarch64) mode
-arm_64bit=1
+# For more options and information see
+# http://rpf.io/configtxt
+# Some settings may impact device functionality. See link above for details
 
-enable_uart=1
-upstream_kernel=1
+# uncomment if you get no picture on HDMI for a default "safe" mode
+#hdmi_safe=1
 
-## memory shared with the GPU
-gpu_mem=128
+# uncomment the following to adjust overscan. Use positive numbers if console
+# goes off screen, and negative if there is too much border
+#overscan_left=16
+#overscan_right=16
+#overscan_top=16
+#overscan_bottom=16
 
-## always audio
+# uncomment to force a console size. By default it will be display's size minus
+# overscan.
+#framebuffer_width=1280
+#framebuffer_height=720
+
+# uncomment if hdmi display is not detected and composite is being output
+#hdmi_force_hotplug=1
+
+# uncomment to force a specific HDMI mode (this will force VGA)
+#hdmi_group=1
+#hdmi_mode=1
+
+# uncomment to force a HDMI mode rather than DVI. This can make audio work in
+# DMT (computer monitor) modes
+#hdmi_drive=2
+
+# uncomment to increase signal to HDMI, if you have interference, blanking, or
+# no display
+#config_hdmi_boost=4
+
+# uncomment for composite PAL
+#sdtv_mode=2
+
+#uncomment to overclock the arm. 700 MHz is the default.
+#arm_freq=800
+
+# Uncomment some or all of these to enable the optional hardware interfaces
+#dtparam=i2c_arm=on
+#dtparam=i2s=on
+#dtparam=spi=on
+
+# Uncomment this to enable infrared communication.
+#dtoverlay=gpio-ir,gpio_pin=17
+#dtoverlay=gpio-ir-tx,gpio_pin=18
+
+# Additional overlays and parameters are documented /boot/overlays/README
+
+# Enable audio (loads snd_bcm2835)
 dtparam=audio=on
 
-## maximum amps on usb ports
-max_usb_current=1
+# Automatically load overlays for detected cameras
+camera_auto_detect=1
 
-## enable hardware-accelerated graphics
+# Automatically load overlays for detected DSI displays
+display_auto_detect=1
+
+# Enable DRM VC4 V3D driver
 dtoverlay=vc4-kms-v3d
+max_framebuffers=2
 
-## kernel
-kernel=kernel8.img
+# Run in 64-bit mode
+arm_64bit=1
 
-## overclock
-arm_freq=2300
-gpu_freq=750
-over_voltage=8
-force_turbo=1
+# Disable compensation for displays with overscan
+disable_overscan=1
 
-## disable splash
-boot_delay=0
-disable_splash=1
+[cm4]
+# Enable host mode on the 2711 built-in XHCI USB controller.
+# This line should be removed if the legacy DWC2 controller is required
+# (e.g. for USB device mode) or if USB support is not required.
+otg_mode=1
+
+[all]
+
+[pi4]
+# Run as fast as firmware / board allows
+arm_boost=1
+
+[all]
+
 EOF
 ##### create rootfs
 [[ -f work/rootfs/etc/os-release ]] || debootstrap --foreign --no-check-gpg --no-merged-usr --variant=minbase --arch=arm64 stable work/rootfs "$REPO"
