@@ -126,7 +126,7 @@ chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash -c "apt install devuan
 ##### install firmware and packages
 mkdir -p work/rootfs/lib/modules/
 cp -rvf work/firmware-master/modules/* work/rootfs/lib/modules/
-echo "deb $REPO stable main contrib non-free" > work/rootfs/etc/apt/sources.list
+echo "deb $REPO stable main contrib non-free non-free-firmware" > work/rootfs/etc/apt/sources.list
 chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash -c "apt update"
 chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash -c "apt install ntp network-manager openssh-server --no-install-recommends -y"
 chroot work/rootfs /usr/bin/qemu-aarch64-static /bin/bash -c "apt install firmware-linux -y"
