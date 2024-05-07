@@ -62,6 +62,10 @@ cat > rootfs/boot/config.txt << EOF
 #uncomment to overclock the arm. 700 MHz is the default.
 #arm_freq=800
 
+#overclock
+arm_freq=2000
+gpu_freq=750
+
 # Uncomment some or all of these to enable the optional hardware interfaces
 #dtparam=i2c_arm=on
 #dtparam=i2s=on
